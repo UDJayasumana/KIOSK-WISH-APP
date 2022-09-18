@@ -136,6 +136,21 @@ public struct MeshPoints
     }
 
 
-    
+    public static List<Vector3> RandomizeMeshPoints(List<Vector3> meshPoints)
+    {
+        List<Vector3> result = new List<Vector3>();
+
+        while(meshPoints.Count > 0)
+        {
+            int randomMeshPointID = Random.Range(0, meshPoints.Count);
+
+            result.Add(meshPoints[randomMeshPointID]);
+
+            meshPoints.RemoveAt(randomMeshPointID);
+
+        }
+
+        return result;
+    }
    
 }

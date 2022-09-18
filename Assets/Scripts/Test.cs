@@ -11,10 +11,14 @@ public class Test : MonoBehaviour
     public GameObject CubePF;
 
     private XMLHandler _xmlHandler;
-   
+
+
+    private List<Vector3> allRandomPoints;
+    private GameObject[] cubes;
+
     void Start()
     {
-
+        
         //XMLTest();
 
         GenerateMeshPoints();
@@ -40,14 +44,44 @@ public class Test : MonoBehaviour
         MeshPoints meshPointsB = new MeshPoints(MeshObjB);
         List<Vector3> randomPointsB = meshPointsB.GenerateRandomPointsOnMesh(10, -0.04f, 0.04f, MeshPoints.MeshOffsetDirection.X);
 
-        List<Vector3> allRandomPoints = meshPointsA + meshPointsB;
+        allRandomPoints = meshPointsA + meshPointsB;
 
+        /*
         foreach (Vector3 point in allRandomPoints)
         {
             GameObject cube = Instantiate(CubePF);
             cube.transform.position = point;
         }
+        */
+        cubes = new GameObject[allRandomPoints.Count];
 
+        for (int i = 0; i < allRandomPoints.Count; i++)
+        {
+            // GameObject cube = Instantiate(CubePF);
+            //cube.transform.position = allRandomPoints[i];
+            cubes[i] = Instantiate(CubePF);
+            cubes[i].transform.position = allRandomPoints[i];
+
+            if (i == 0)
+            {
+                cubes[i].GetComponent<MeshRenderer>().material.color = Color.red;
+            }
+        }
+
+       
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            allRandomPoints = MeshPoints.RandomizeMeshPoints(allRandomPoints);
+
+            for (int i = 0; i < allRandomPoints.Count; i++)
+            {
+                cubes[i].transform.position = allRandomPoints[i];
+            }
+        }
     }
 
     void XMLTest()
