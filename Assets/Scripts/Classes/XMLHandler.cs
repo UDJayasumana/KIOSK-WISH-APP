@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
+using System.IO;
 using UnityEngine;
 
 public class XMLHandler
 {
     private XmlDocument _xmlDocument;
     private XmlElement _xmlRootElement;
+
 
     #region Class Constructors
 
@@ -32,12 +34,15 @@ public class XMLHandler
 
     #endregion
 
+    #region XML Document Creation Methods
+
     /// <summary>
     /// Create a root element for the XML Document
     /// </summary>
     public void CreateRootElement(string rootElementName)
     {
         this._xmlRootElement = this._xmlDocument.CreateElement(rootElementName);
+        appendRootToXMLDocument();
     }
 
     #region Create XML Elements
@@ -94,7 +99,6 @@ public class XMLHandler
 
     #endregion
 
-
     /// <summary>
     /// Append element as a child element of the root element.
     /// </summary>
@@ -104,47 +108,184 @@ public class XMLHandler
         {
             this._xmlRootElement.AppendChild(element);
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-     
-            if(e.GetType() == typeof(NullReferenceException))
-            {
-                Debug.LogError("Append to root Faield : " + "Didn't find any root element.");
-            }
-            else
-            {
-                Debug.LogError("Append to root Faield : " + e.Message);
-            }
-            
-    
+            Debug.LogError("Append to root Faield : " + e.Message);
         }
 
     }
 
 
     /// <summary>
-    /// Write XML data into a xml file.
+    /// Append XML element to the XML Document as a root element
     /// </summary>
-    public void WriteXMLDocument(string xmlDocName)
+    private void appendRootToXMLDocument()
     {
         try
         {
             this._xmlDocument.AppendChild(this._xmlRootElement);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Append to XML Document Faield : " + e.Message);
+        }
+
+    }
+
+    /// <summary>
+    /// Write XML data into a xml file.
+    /// </summary>
+    public void WriteXMLDocument(string xmlDocName)
+    {
+
+        try
+        {
             this._xmlDocument.Save(xmlDocName + ".xml");
             Debug.Log("XML File Saved Succesfully");
         }
-        catch(Exception e)
+        catch (Exception e)
         {
-            if (e.GetType() == typeof(NullReferenceException))
+            Debug.LogError("XML Write Faield : " + e.Message);
+        }
+
+    }
+
+    #endregion
+
+    #region XML Document Load Methods
+
+
+    /// <summary>
+    /// Create an existing XML Document.
+    /// </summary>
+    public void OpenXMLDocument(string xmlDocName)
+    {
+        try
+        {
+            this._xmlDocument.Load(xmlDocName + ".xml");
+            loadRootElement();
+            Debug.Log("XML File Opened Succesfully");
+        }
+        catch (Exception e)
+        {
+
+            Debug.LogError("XML Document Open Faield : " + e.Message);
+
+        }
+
+    }
+
+
+    /// <summary>
+    /// Get the root element from the XML document
+    /// </summary>
+    private void loadRootElement()
+    {
+        this._xmlRootElement = this._xmlDocument.DocumentElement;
+    }
+
+
+    /// <summary>
+    /// Get the Raw string data from all the child nodes
+    /// </summary>
+    public List<string> GetXMLRawData()
+    {
+        List<string> result = new List<string>();
+
+        try
+        {
+            for (int i = 0; i < this._xmlRootElement.ChildNodes.Count; i++)
             {
-                Debug.LogError("XML Write Faield : " + "Didn't find any root element.");
+                XmlNode attr = this._xmlRootElement.ChildNodes[i].FirstChild;
+                result.Add(attr.Value);
             }
-            else
+
+            return result;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("XML Data Receiving Error : " + e.Message);
+
+            return null;
+        }
+
+
+    }
+
+    #region Get Data from XML string
+
+
+    /// <summary>
+    /// Convert Raw string int type data back into a Integer type 
+    /// </summary>
+    public int GetIntData(string resultText)
+    {
+        return int.Parse(resultText);
+    }
+
+    /// <summary>
+    /// Convert Raw string float type data back into a Floating type 
+    /// </summary>
+    public float GetFloatData(string resultText)
+    {
+        return float.Parse(resultText);
+    }
+
+    /// <summary>
+    /// Convert Raw string Vector3 type data back into a Vector3 type 
+    /// </summary>
+    public Vector3 GetVector3Data(string resultText)
+    {
+        char[] whitespace = new char[] { ' ', '\t' };
+        string[] ssizes = resultText.Split(whitespace);
+
+        Vector3 point = Vector3.zero;
+
+        for (int i = 0; i < ssizes.Length; i++)
+        {
+            switch (i)
             {
-                Debug.LogError("XML Write Faield : " + e.Message);
+                case 0:
+                    point.x = float.Parse(ssizes[i]);
+                    break;
+
+                case 1:
+                    point.y = float.Parse(ssizes[i]);
+                    break;
+
+                case 2:
+                    point.z = float.Parse(ssizes[i]);
+                    break;
             }
         }
+
+        return point;
     }
+
+    #endregion
+
+    #endregion
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
