@@ -6,11 +6,52 @@ using UnityEngine;
 public class Test : MonoBehaviour
 {
 
+    public GameObject MeshObjA;
+    public GameObject MeshObjB;
+    public GameObject CubePF;
+
     private XMLHandler _xmlHandler;
    
     void Start()
     {
 
+        //XMLTest();
+
+        GenerateMeshPoints();
+
+    }
+
+    void GenerateMeshPoints()
+    {
+        /*
+        MeshPoints meshPoints = new MeshPoints(MeshObjB);
+        List<Vector3> randomPoints = meshPoints.GenerateRandomPointsOnMesh(10, -0.04f, 0.04f, MeshPoints.MeshOffsetDirection.X);
+
+        foreach (Vector3 point in randomPoints)
+        {
+            GameObject cube = Instantiate(CubePF);
+            cube.transform.position = point;
+        }
+        */
+
+        MeshPoints meshPointsA = new MeshPoints(MeshObjA);
+        List<Vector3> randomPointsA = meshPointsA.GenerateRandomPointsOnMesh(10, -0.04f, 0.04f, MeshPoints.MeshOffsetDirection.X);
+
+        MeshPoints meshPointsB = new MeshPoints(MeshObjB);
+        List<Vector3> randomPointsB = meshPointsB.GenerateRandomPointsOnMesh(10, -0.04f, 0.04f, MeshPoints.MeshOffsetDirection.X);
+
+        List<Vector3> allRandomPoints = meshPointsA + meshPointsB;
+
+        foreach (Vector3 point in allRandomPoints)
+        {
+            GameObject cube = Instantiate(CubePF);
+            cube.transform.position = point;
+        }
+
+    }
+
+    void XMLTest()
+    {
         //Creating a new XML file and Writing
         /*
         _xmlHandler = new XMLHandler();
@@ -32,7 +73,7 @@ public class Test : MonoBehaviour
 
 
         //Open Existing XML file and Reading
-        
+
         _xmlHandler = new XMLHandler();
 
         //Open an existing XML file
@@ -53,15 +94,12 @@ public class Test : MonoBehaviour
         }
 
         //Read those deserialized Vector3 data
-        foreach(Vector3 d in myDataList)
+        foreach (Vector3 d in myDataList)
         {
             Debug.Log(d);
         }
-        
-        
-   
 
     }
 
-   
+
 }
