@@ -27,16 +27,6 @@ public class Test : MonoBehaviour
 
     void GenerateMeshPoints()
     {
-        /*
-        MeshPoints meshPoints = new MeshPoints(MeshObjB);
-        List<Vector3> randomPoints = meshPoints.GenerateRandomPointsOnMesh(10, -0.04f, 0.04f, MeshPoints.MeshOffsetDirection.X);
-
-        foreach (Vector3 point in randomPoints)
-        {
-            GameObject cube = Instantiate(CubePF);
-            cube.transform.position = point;
-        }
-        */
 
         MeshPoints meshPointsA = new MeshPoints(MeshObjA);
         List<Vector3> randomPointsA = meshPointsA.GenerateRandomPointsOnMesh(10, -0.04f, 0.04f, MeshPoints.MeshOffsetDirection.X);
@@ -46,19 +36,10 @@ public class Test : MonoBehaviour
 
         allRandomPoints = meshPointsA + meshPointsB;
 
-        /*
-        foreach (Vector3 point in allRandomPoints)
-        {
-            GameObject cube = Instantiate(CubePF);
-            cube.transform.position = point;
-        }
-        */
         cubes = new GameObject[allRandomPoints.Count];
 
         for (int i = 0; i < allRandomPoints.Count; i++)
         {
-            // GameObject cube = Instantiate(CubePF);
-            //cube.transform.position = allRandomPoints[i];
             cubes[i] = Instantiate(CubePF);
             cubes[i].transform.position = allRandomPoints[i];
 
