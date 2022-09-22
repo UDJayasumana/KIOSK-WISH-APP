@@ -6,11 +6,67 @@ using UnityEngine;
 public class Test : MonoBehaviour
 {
 
+    public GameObject MeshObjA;
+    public GameObject MeshObjB;
+    public GameObject CubePF;
+
     private XMLHandler _xmlHandler;
-   
+
+
+    private List<Vector3> allRandomPoints;
+    private GameObject[] cubes;
+
     void Start()
     {
+        
+        //XMLTest();
 
+        GenerateMeshPoints();
+
+    }
+
+    void GenerateMeshPoints()
+    {
+
+        MeshPoints meshPointsA = new MeshPoints(MeshObjA);
+        List<Vector3> randomPointsA = meshPointsA.GenerateRandomPointsOnMesh(10, -0.04f, 0.04f, MeshPoints.MeshOffsetDirection.X);
+
+        MeshPoints meshPointsB = new MeshPoints(MeshObjB);
+        List<Vector3> randomPointsB = meshPointsB.GenerateRandomPointsOnMesh(10, -0.04f, 0.04f, MeshPoints.MeshOffsetDirection.X);
+
+        allRandomPoints = meshPointsA + meshPointsB;
+
+        cubes = new GameObject[allRandomPoints.Count];
+
+        for (int i = 0; i < allRandomPoints.Count; i++)
+        {
+            cubes[i] = Instantiate(CubePF);
+            cubes[i].transform.position = allRandomPoints[i];
+
+            if (i == 0)
+            {
+                cubes[i].GetComponent<MeshRenderer>().material.color = Color.red;
+            }
+        }
+
+       
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            allRandomPoints = MeshPoints.RandomizeMeshPoints(allRandomPoints);
+
+            for (int i = 0; i < allRandomPoints.Count; i++)
+            {
+                cubes[i].transform.position = allRandomPoints[i];
+            }
+        }
+    }
+
+    void XMLTest()
+    {
         //Creating a new XML file and Writing
         /*
         _xmlHandler = new XMLHandler();
@@ -32,7 +88,7 @@ public class Test : MonoBehaviour
 
 
         //Open Existing XML file and Reading
-        
+
         _xmlHandler = new XMLHandler();
 
         //Open an existing XML file
@@ -53,15 +109,12 @@ public class Test : MonoBehaviour
         }
 
         //Read those deserialized Vector3 data
-        foreach(Vector3 d in myDataList)
+        foreach (Vector3 d in myDataList)
         {
             Debug.Log(d);
         }
-        
-        
-   
 
     }
 
-   
+
 }
