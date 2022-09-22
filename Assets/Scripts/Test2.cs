@@ -30,6 +30,8 @@ public class Test2 : MonoBehaviour
         meshInstance = new MeshInstance();
         spawnObjects = new List<GameObject>();
 
+        Debug.Log("Random Points : " + randomPoints.Count);
+
         /*
         for(int j = 0; j < spawnObjects.Count; j++)
         {
@@ -69,7 +71,7 @@ public class Test2 : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.P))
         {
             
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 800; i++)
             {
                 if (i % 2 == 0)
                     spawnObjects.Add(SpawnObjA);
@@ -79,10 +81,71 @@ public class Test2 : MonoBehaviour
 
             
             bool decision = meshInstance.UpdateMeshesInstant(spawnObjects, randomPoints);
-            Debug.Log(decision);
 
-          
-                
+            
+            List<Vector3> randomStartPoints = new List<Vector3>();
+
+            foreach(GameObject go in spawnObjects)
+            {
+                float rx = Random.Range(-200f, 200f);
+                float ry = Random.Range(-200f, 200f);
+                float rz = Random.Range(-200f, 200f);
+                randomStartPoints.Add(new Vector3(rx, ry, rz));
+            }
+
+            //Debug.Log("randomStartPoints count : " + randomStartPoints.Count);
+            List<MeshData<GameObject, Vector3, Vector3>> meshDataList = meshInstance.GetManualUpdatableMeshes(spawnObjects, randomStartPoints, randomPoints);
+
+            Debug.Log("meshData List " + ((meshDataList == null) ? "is null" : ("count : " + meshDataList.Count)));
+
+            if (meshDataList != null)
+            {
+                foreach (MeshData<GameObject, Vector3, Vector3> md in meshDataList)
+                {
+                    meshInstance.UpdateMeshInstant(md, randomPoints);
+                }
+            }
+
+            //List<MeshData<GameObject, Vector3, Vector3>> meshData =  meshInstance.GetManualUpdatableMeshes(spawnObjects)
+            // Debug.Log(decision);
+
+        }
+
+        if(Input.GetKeyDown(KeyCode.O))
+        {
+            for (int i = 0; i < 15; i++)
+            {
+                if (i % 2 == 0)
+                    spawnObjects.Add(SpawnObjA);
+                else
+                    spawnObjects.Add(SpawnObjB);
+            }
+
+
+            bool decision = meshInstance.UpdateMeshesInstant(spawnObjects, randomPoints);
+            // Debug.Log(decision);
+            
+            List<Vector3> randomStartPoints = new List<Vector3>();
+
+            foreach (GameObject go in spawnObjects)
+            {
+                float rx = Random.Range(-200f, 200f);
+                float ry = Random.Range(-200f, 200f);
+                float rz = Random.Range(-200f, 200f);
+                randomStartPoints.Add(new Vector3(rx, ry, rz));
+            }
+
+            //Debug.Log("randomStartPoints count : " + randomStartPoints.Count);
+            List<MeshData<GameObject, Vector3, Vector3>> meshDataList = meshInstance.GetManualUpdatableMeshes(spawnObjects, randomStartPoints, randomPoints);
+            Debug.Log("meshData List " + ((meshDataList == null) ? "is null" : ("count : " + meshDataList.Count)));
+
+            if (meshDataList != null)
+            {
+                foreach (MeshData<GameObject, Vector3, Vector3> md in meshDataList)
+                {
+                    meshInstance.UpdateMeshInstant(md, randomPoints);
+                }
+            }
         }
 
         meshInstance.CreateInstanceMesh(gameObject);
