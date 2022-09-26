@@ -133,6 +133,8 @@ GameObject:
   m_Component:
   - component: {fileID: 219486369}
   - component: {fileID: 219486368}
+  - component: {fileID: 219486371}
+  - component: {fileID: 219486370}
   m_Layer: 0
   m_Name: AppManager
   m_TagString: Untagged
@@ -149,13 +151,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 219486367}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 495769e7275965e4094962706068de79, type: 3}
+  m_Script: {fileID: 11500000, guid: 44b1613c85c1b384d878841fcf439de7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MeshObjects>k__BackingField:
-  - {fileID: 1325663079}
-  - {fileID: 1140219678}
-  <PointsPerTriangle>k__BackingField: 10
+  SpawnObjectA: {fileID: 483054645629967901, guid: 1e6f65b6b1bcb604f8e1c0713b4547fd, type: 3}
+  SpawnObjectB: {fileID: 8924489281754799471, guid: f12be5eb84d25b641889098d98c7bc96, type: 3}
 --- !u!4 &219486369
 Transform:
   m_ObjectHideFlags: 0
@@ -170,6 +170,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &219486370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 219486367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 259987d082d3caf4b8e28ff4f3eaf566, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  XMLFileName: MyXML
+--- !u!114 &219486371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 219486367}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9175670cec660de499d6fb915ced16a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <MeshObjects>k__BackingField:
+  - {fileID: 1325663079}
+  - {fileID: 1140219678}
+  <PointsPerTriangle>k__BackingField: 10
+  <PointMinOffset>k__BackingField: -0.04
+  <PointMaxOffset>k__BackingField: 0.04
+  <MeshesOffsetDirection>k__BackingField: 0
 --- !u!1 &1140219678
 GameObject:
   m_ObjectHideFlags: 0

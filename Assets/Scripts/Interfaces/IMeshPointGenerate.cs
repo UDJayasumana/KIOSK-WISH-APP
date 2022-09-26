@@ -37,8 +37,12 @@ public interface IMeshPointGenerate
     /// <summary>
     /// Random points of all the meshes
     /// </summary>
-    List<Vector3> RandomMeshPointList { get; }
+    List<Vector3> RandomMeshPointList { get; set; }
 
+
+    /// <summary>
+    /// Generate Random points on the Triangles in all the seelected meshes
+    /// </summary>
     void GenerateMeshPoints();
 
 }
