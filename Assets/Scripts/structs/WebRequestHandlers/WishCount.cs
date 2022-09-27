@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IGetRequest
+[Serializable]
+public struct WishCount 
 {
-   IEnumerator GetRequest(string url, Action<string> callback = null);
+    public int full_count;
 }
