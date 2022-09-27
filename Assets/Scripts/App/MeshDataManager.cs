@@ -32,7 +32,7 @@ public class MeshDataManager : MonoBehaviour, IMeshPointGenerate
 
     void Awake()
     {
-        Initialize();
+       // Initialize();
     }
 
     void Initialize()

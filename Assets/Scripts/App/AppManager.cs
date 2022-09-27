@@ -14,7 +14,7 @@ public class AppManager : MonoBehaviour
    
     void Awake()
     {
-        Initialize();
+        //Initialize();
 
        
     }
@@ -22,6 +22,7 @@ public class AppManager : MonoBehaviour
 
     void Update()
     {
+        /*
         if(Input.GetKeyDown(KeyCode.P))
         {
             SpawnObjects(10);
@@ -31,7 +32,7 @@ public class AppManager : MonoBehaviour
            _instaceWishMesh = new GameObject("Wish Mesh Instance");
 
         _meshDataManager.MeshInstancer.CreateInstanceMesh(_instaceWishMesh);
-
+        */
           
     }
 
