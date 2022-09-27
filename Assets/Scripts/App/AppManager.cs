@@ -9,14 +9,14 @@ public class AppManager : MonoBehaviour
 
     private MeshDataManager _meshDataManager;
     private XMLFileManager _xmlFileManager;
+    private DatabaseManager _databaseManager;
+    private WishesManager _wishesManager;
 
     private GameObject _instaceWishMesh;
    
     void Awake()
     {
-        //Initialize();
-
-       
+        Initialize();  
     }
 
 
@@ -25,7 +25,7 @@ public class AppManager : MonoBehaviour
         /*
         if(Input.GetKeyDown(KeyCode.P))
         {
-            SpawnObjects(10);
+            SpawnObjects(15);
         }
 
         if(_instaceWishMesh == null)
@@ -38,16 +38,25 @@ public class AppManager : MonoBehaviour
 
     void Initialize()
     {
-        _meshDataManager = GetComponent<MeshDataManager>();
+        
+       _meshDataManager = GetComponent<MeshDataManager>();
+       _xmlFileManager = GetComponent<XMLFileManager>();
+       _databaseManager = GetComponent<DatabaseManager>();
+       _wishesManager = GetComponent<WishesManager>();
 
-        _xmlFileManager = GetComponent<XMLFileManager>();
+        
+       CreateOrLoadRandomMeshPoints();
+
+       UpdateWishesData();
 
 
-        CreateOrLoadRandomMeshPoints();
-
-        _spawnObjects = new List<GameObject>();
     }
 
+
+    
+    /// <summary>
+    /// Create or Load MeshPoint Data
+    /// </summary>
     void CreateOrLoadRandomMeshPoints()
     {
         bool isXmlFound = _xmlFileManager.CheckXMLFile("MyXML");
@@ -85,6 +94,25 @@ public class AppManager : MonoBehaviour
             Debug.Log("New Mesh Points : " + _meshDataManager.RandomMeshPointList.Count);
         }
 
+    }
+
+
+    /// <summary>
+    /// Sync with database abd Update new wishes data
+    /// </summary>
+    async void UpdateWishesData()
+    {
+
+        if (_databaseManager.WishesInfo == null)
+            await _databaseManager.GetLatestWishesInfo();
+
+        Debug.Log(_databaseManager.WishesInfo.Count);
+
+        _wishesManager.LoadWishPrefabs();
+
+        bool isWishesUpdated = _wishesManager.UpdateWishesList();
+
+        Debug.Log("Wishes Update Status : " + isWishesUpdated);
     }
 
 

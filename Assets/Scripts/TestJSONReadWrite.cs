@@ -54,3 +54,10 @@ public class TestJSONReadWrite : MonoBehaviour
 
     
 }
+
+public class Save
+{
+    public string PlayerName;
+    public int Score;
+    public List<string> NickNames;
+}

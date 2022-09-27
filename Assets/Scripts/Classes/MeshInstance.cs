@@ -98,7 +98,6 @@ public class MeshInstance
         if ((spawnObjects.Count - this._lastMeshCount) == 0 || (spawnObjects.Count - this._lastMeshCount) > this.MeshInstantUpdateMargin)
             return null;
 
-
             List<MeshData<GameObject, Vector3, Vector3>> result = new List<MeshData<GameObject, Vector3, Vector3>>();
 
         if (this._lastMeshCount + (spawnObjects.Count - this._lastMeshCount) <= meshPoints.Count)
@@ -107,8 +106,8 @@ public class MeshInstance
             for (int i = 0; i < (spawnObjects.Count - this._lastMeshCount); i++)
             {
                 MeshData<GameObject, Vector3, Vector3> meshData = new MeshData<GameObject, Vector3, Vector3>();
-                meshData.GameObject = spawnObjects[i];
-                meshData.StartPoint = startPoints[i];
+                meshData.GameObject = spawnObjects[this._lastMeshCount + i];
+                meshData.StartPoint = startPoints[this._lastMeshCount + i];
                 meshData.EndPoint   = meshPoints[this._lastMeshCount + i];
                 result.Add(meshData);
             }
@@ -119,8 +118,8 @@ public class MeshInstance
             for (int j = 0; j < (spawnObjects.Count - this._lastMeshCount); j++)
             {
                 MeshData<GameObject, Vector3, Vector3> meshData = new MeshData<GameObject, Vector3, Vector3>();
-                meshData.GameObject = spawnObjects[j];
-                meshData.StartPoint = startPoints[j];
+                meshData.GameObject = spawnObjects[this._lastMeshCount + j];
+                meshData.StartPoint = startPoints[this._lastMeshCount + j];
                 int randomMeshPointID = Random.Range(0, meshPoints.Count);
                 meshData.EndPoint = meshPoints[randomMeshPointID];
                 result.Add(meshData);
