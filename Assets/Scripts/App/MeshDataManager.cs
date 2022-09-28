@@ -29,6 +29,7 @@ public class MeshDataManager : MonoBehaviour, IMeshPointGenerate
     #endregion
 
     public MeshInstance MeshInstancer;
+    
 
     void Awake()
     {
@@ -61,6 +62,7 @@ public class MeshDataManager : MonoBehaviour, IMeshPointGenerate
             {
                 MeshPointSet[i] = new MeshPoints(MeshObjects[i]);
                 MeshPointSet[i].GenerateRandomPointsOnMesh(PointsPerTriangle, PointMinOffset, PointMaxOffset, MeshesOffsetDirection);
+            
             }
 
             if (RandomMeshPointList == null)

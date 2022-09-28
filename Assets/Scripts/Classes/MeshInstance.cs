@@ -180,6 +180,7 @@ public class MeshInstance
         {
             combiners[i].subMeshIndex = 0;
             combiners[i].mesh = meshFilterList[i].sharedMesh;
+            //combiners[i].mesh.uv = meshFilterList[i].sharedMesh.uv;
             combiners[i].transform = meshFilterList[i].transform.localToWorldMatrix;
         }
 

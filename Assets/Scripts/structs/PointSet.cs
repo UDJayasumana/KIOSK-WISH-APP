@@ -112,7 +112,6 @@ public struct MeshPoints
         return this.meshPointList;
     }
 
-
     public static List<Vector3> operator+ (MeshPoints a, MeshPoints b)
     {
         if((a.MeshPointList.Count == 0 && b.MeshPointList.Count == 0) || b.MeshPointList.Count == 0)

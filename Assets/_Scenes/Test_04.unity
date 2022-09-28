@@ -237,9 +237,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3bff5b0725f04d47aa39c00ac7d989d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  W_SriLankaCan: {fileID: 483054645629967901, guid: 1e6f65b6b1bcb604f8e1c0713b4547fd, type: 3}
-  W_BringCupHome: {fileID: 8924489281754799471, guid: f12be5eb84d25b641889098d98c7bc96, type: 3}
-  W_JayaApatai: {fileID: 483054645629967901, guid: 1e6f65b6b1bcb604f8e1c0713b4547fd, type: 3}
+  W_SriLankaCan: {fileID: 2389093384160565210, guid: 06268fc1ce41ac54dba705555cf3b2da, type: 3}
+  W_BringCupHome: {fileID: 1562318628342072344, guid: b6b2ab8da612cbe4e9570ddc29dfa6d7, type: 3}
+  W_JayaApatai: {fileID: 8503290952903584226, guid: 7d1723550aad0234a95cb3d09d81179d, type: 3}
+  WishesSetMaterial: {fileID: 2100000, guid: bff03d4292d209b42ab4d9c466677ea0, type: 2}
 --- !u!1 &1140219678
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,7 +669,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -709,7 +710,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1505728817}
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: -0.93, y: 0, z: 6.82}
+  m_LocalPosition: {x: -0.9, y: 0.41, z: 8.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -771,7 +772,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 3c4a5e6ddd322454280e70cae4bf8747, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

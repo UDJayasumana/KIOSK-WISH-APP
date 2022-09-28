@@ -6,6 +6,8 @@ public class WishesManager : MonoBehaviour
 {
     public GameObject W_SriLankaCan, W_BringCupHome, W_JayaApatai;
 
+    public Material WishesSetMaterial;
+
     public List<GameObject> WishPrefabs { get { return _wishPrefabs; } }
 
     private MeshDataManager _meshDataManager;
@@ -29,6 +31,9 @@ public class WishesManager : MonoBehaviour
     {
         if (_instaceWishMesh == null)
             _instaceWishMesh = new GameObject("Wish Mesh Instance");
+
+        if(WishesSetMaterial != null)
+           _meshDataManager.MeshInstancer.InstanceMaterial = WishesSetMaterial;
 
         if(_meshDataManager.MeshInstancer != null)
            _meshDataManager.MeshInstancer.CreateInstanceMesh(_instaceWishMesh);
