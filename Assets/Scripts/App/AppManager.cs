@@ -1,18 +1,23 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AppManager : MonoBehaviour
 {
-    public GameObject SpawnObjectA, SpawnObjectB;
-    private List<GameObject> _spawnObjects;
+
+    public Text DebugTX;
+
+    //For Manual Updatable Spawn Objects
+    private List<GameObject> _manualSpawnObjects;
+    //End of For Manual Updatable Spawn Objects
 
     private MeshDataManager _meshDataManager;
     private XMLFileManager _xmlFileManager;
     private DatabaseManager _databaseManager;
     private WishesManager _wishesManager;
 
-    private GameObject _instaceWishMesh;
    
     void Awake()
     {
@@ -22,18 +27,20 @@ public class AppManager : MonoBehaviour
 
     void Update()
     {
-        /*
-        if(Input.GetKeyDown(KeyCode.P))
+        //For Manual Updatable Spawn Objects
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            SpawnObjects(15);
+            try
+            {
+                ManualUpdateWishData(15);
+            }
+            catch(Exception e)
+            {
+                DebugTX.text = e.Message;
+            }
+           
         }
-
-        if(_instaceWishMesh == null)
-           _instaceWishMesh = new GameObject("Wish Mesh Instance");
-
-        _meshDataManager.MeshInstancer.CreateInstanceMesh(_instaceWishMesh);
-        */
-          
+        //End of For Manual Updatable Spawn Objects  
     }
 
     void Initialize()
@@ -46,14 +53,19 @@ public class AppManager : MonoBehaviour
 
         
        CreateOrLoadRandomMeshPoints();
+        
+        //Comment for Activate Manual Update
+       //UpdateWishesData();
 
-       UpdateWishesData();
 
+        //For Manual Updatable Spawn Objects
+        _manualSpawnObjects = new List<GameObject>();
+        //End of For Manual Updatable Spawn Objects
 
     }
 
 
-    
+
     /// <summary>
     /// Create or Load MeshPoint Data
     /// </summary>
@@ -116,32 +128,36 @@ public class AppManager : MonoBehaviour
     }
 
 
-    void SpawnObjects(int spawnCount)
+    //For Manual Updatable Spawn Objects
+    void ManualUpdateWishData(int amount)
     {
-        for(int i = 0; i < spawnCount; i++)
+        for (int i = 0; i < amount; i++)
         {
-            if (i % 2 == 0)
-                _spawnObjects.Add(SpawnObjectA);
-            else
-                _spawnObjects.Add(SpawnObjectB);
+              
+            int randomId = UnityEngine.Random.Range(0, 3);
+
+            GameObject spawnObj = (randomId == 0) ? _wishesManager.W_BringCupHome : ((randomId == 1) ? _wishesManager.W_SriLankaCan : _wishesManager.W_JayaApatai);
+
+            _manualSpawnObjects.Add(spawnObj);
+                   
         }
 
-        bool isUpdateMeshes = _meshDataManager.MeshInstancer.UpdateMeshesInstant(_spawnObjects, _meshDataManager.RandomMeshPointList);
-
-        Debug.Log("Mesh Update Result : " + isUpdateMeshes);
+        bool isUpdateMeshes = _meshDataManager.MeshInstancer.UpdateMeshesInstant(_manualSpawnObjects, _meshDataManager.RandomMeshPointList);
 
         if (!isUpdateMeshes)
         {
+            Debug.Log("Time for manual Update");
+
             List<Vector3> randomStartPoints = new List<Vector3>();
 
-            foreach (GameObject go in _spawnObjects)
+            foreach (GameObject go in _manualSpawnObjects)
             {
-                float rx = Random.Range(-200f, 200f);
-                float ry = Random.Range(-200f, 200f);
-                float rz = Random.Range(-200f, 200f);
+                float rx = UnityEngine.Random.Range(-200f, 200f);
+                float ry = UnityEngine.Random.Range(-200f, 200f);
+                float rz = UnityEngine.Random.Range(-200f, 200f);
                 randomStartPoints.Add(new Vector3(rx, ry, rz));
             }
-            List<MeshData<GameObject, Vector3, Vector3>> meshDataList = _meshDataManager.MeshInstancer.GetManualUpdatableMeshes(_spawnObjects, randomStartPoints, _meshDataManager.RandomMeshPointList);
+            List<MeshData<GameObject, Vector3, Vector3>> meshDataList = _meshDataManager.MeshInstancer.GetManualUpdatableMeshes(_manualSpawnObjects, randomStartPoints, _meshDataManager.RandomMeshPointList);
 
             Debug.Log("meshData List " + ((meshDataList == null) ? "is null" : ("count : " + meshDataList.Count)));
 
@@ -158,8 +174,7 @@ public class AppManager : MonoBehaviour
 
         }
 
-       
     }
-
+    //End of For Manual Updatable Spawn Objects
 
 }

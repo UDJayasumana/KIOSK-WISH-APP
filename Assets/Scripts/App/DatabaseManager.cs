@@ -92,37 +92,7 @@ public class DatabaseManager : MonoBehaviour
 
         return result;
     }
-
-
-     void Awake()
-    {
-
-       // string latestWishCount = await RequestLatestWishCount();     
-       /*
-        WishCount wishCount = JsonUtility.FromJson<WishCount>(latestWishCount);
-
-        Debug.Log("Latest Wish Count : " + wishCount.full_count);
-
-         string wishes = await RequestWishes(1, 100);
-      
-         WishesContainer wishesContainer = JsonUtility.FromJson<WishesContainer>(wishes);
-
-         Debug.Log("Status : " + wishesContainer.status);
-         Debug.Log("Desc : " + wishesContainer.desc);
-         Debug.Log("row_start : " + wishesContainer.row_start);
-         Debug.Log("row_end : " + wishesContainer.row_end);
-         Debug.Log("row_count : " + wishesContainer.row_count);
-         Debug.Log("Data Count : " + wishesContainer.data.Count);
-        */
    
-
-       
-
-    }
-
-   
-   
-    
     private async Task RequestLatestWishCount()
     {
 
