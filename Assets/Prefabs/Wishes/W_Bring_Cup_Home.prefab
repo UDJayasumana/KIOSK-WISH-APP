@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2226370511946800802}
   - component: {fileID: 2975317746682777863}
   - component: {fileID: 1057929145497003469}
+  - component: {fileID: -2118766605580635012}
   m_Layer: 0
   m_Name: W_Bring_Cup_Home
   m_TagString: Untagged
@@ -81,3 +82,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-2118766605580635012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1562318628342072344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 529065539eea9a148a84bf5d8847a3a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PointA: {x: 0, y: 0, z: 0}
+  PointB: {x: 0, y: 0, z: 0}

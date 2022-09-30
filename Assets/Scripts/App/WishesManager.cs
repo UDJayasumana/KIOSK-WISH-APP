@@ -8,6 +8,9 @@ public class WishesManager : MonoBehaviour
 
     public Material WishesSetMaterial;
 
+
+    public Camera Camera2D;
+
     public List<GameObject> WishPrefabs { get { return _wishPrefabs; } }
 
     private MeshDataManager _meshDataManager;
@@ -17,17 +20,22 @@ public class WishesManager : MonoBehaviour
 
     private List<GameObject> _wishPrefabs;
 
+    private int fullWishCount = 0;
     void Awake()
     {
         _meshDataManager = GetComponent<MeshDataManager>();
-        _databaseManager = GetComponent<DatabaseManager>();    
+        _databaseManager = GetComponent<DatabaseManager>();
+
+        
     }
 
     void Update()
     {
-        UpdateInstanceMesh();
+        //UpdateInstanceMesh();
+
+
     }
-    void UpdateInstanceMesh()
+    public void UpdateInstanceMesh()
     {
         if (_instaceWishMesh == null)
             _instaceWishMesh = new GameObject("Wish Mesh Instance");
@@ -68,6 +76,52 @@ public class WishesManager : MonoBehaviour
     {
         return _meshDataManager.MeshInstancer.UpdateMeshesInstant(_wishPrefabs, _meshDataManager.RandomMeshPointList);
 
+    }
+
+
+
+    public Vector3 GetRandomScreenPoint()
+    {
+        Vector3 Bounds = Camera2D.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
+
+        float minX = -Bounds.x;
+        float maxX = Bounds.x;
+        float minY = -Bounds.y;
+        float maxY = Bounds.y;
+
+        Vector2 pos = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
+
+        return new Vector3(pos.x, pos.y, 4);
+
+    }
+
+    public IEnumerator SpawnManualWishes(List<MeshData<GameObject, Vector3, Vector3>> meshDataList)
+    {
+        /*
+        for(int i = 0; i < meshDataList.Count; i++)
+        {
+            GameObject go = Instantiate(meshDataList[i].GameObject);
+            go.transform.position = meshDataList[i].StartPoint;
+            go.GetComponent<WishItem>().Initialize(meshDataList[i].StartPoint, meshDataList[i].EndPoint);
+            yield return new WaitForSeconds(2);
+        }
+        
+        yield return new WaitForSeconds(1);
+        */
+
+        foreach(MeshData<GameObject, Vector3, Vector3> md in meshDataList)
+        {
+            _meshDataManager.MeshInstancer.UpdateMeshInstant(md, _meshDataManager.RandomMeshPointList);
+            fullWishCount++;
+            Debug.Log("WC : " + fullWishCount);
+            yield return new WaitForSeconds(2);
+        }
+
+        yield return new WaitForSeconds(1);
+
+        UpdateInstanceMesh();
+
+        Debug.Log("Spawn Done!");
     }
 
 }

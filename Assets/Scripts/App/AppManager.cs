@@ -144,6 +144,10 @@ public class AppManager : MonoBehaviour
 
         bool isUpdateMeshes = _meshDataManager.MeshInstancer.UpdateMeshesInstant(_manualSpawnObjects, _meshDataManager.RandomMeshPointList);
 
+        if(isUpdateMeshes)
+           _wishesManager.UpdateInstanceMesh();
+
+
         if (!isUpdateMeshes)
         {
             Debug.Log("Time for manual Update");
@@ -152,28 +156,33 @@ public class AppManager : MonoBehaviour
 
             foreach (GameObject go in _manualSpawnObjects)
             {
-                float rx = UnityEngine.Random.Range(-200f, 200f);
-                float ry = UnityEngine.Random.Range(-200f, 200f);
-                float rz = UnityEngine.Random.Range(-200f, 200f);
-                randomStartPoints.Add(new Vector3(rx, ry, rz));
+                randomStartPoints.Add(_wishesManager.GetRandomScreenPoint());
             }
+
             List<MeshData<GameObject, Vector3, Vector3>> meshDataList = _meshDataManager.MeshInstancer.GetManualUpdatableMeshes(_manualSpawnObjects, randomStartPoints, _meshDataManager.RandomMeshPointList);
 
             Debug.Log("meshData List " + ((meshDataList == null) ? "is null" : ("count : " + meshDataList.Count)));
 
+
+            StartCoroutine(_wishesManager.SpawnManualWishes(meshDataList));
+
             //Update Single Meshes into the Mesh list
             //If mesh limit increase after adding the current meshes, then update only the count
             //Otherwise added these meshes also into mesh list
+            /*
             if (meshDataList != null)
             {
                 foreach (MeshData<GameObject, Vector3, Vector3> md in meshDataList)
                 {
                     _meshDataManager.MeshInstancer.UpdateMeshInstant(md, _meshDataManager.RandomMeshPointList);
+                    
                 }
             }
+            */
+            
 
         }
-
+        //_wishesManager.UpdateInstanceMesh();
     }
     //End of For Manual Updatable Spawn Objects
 

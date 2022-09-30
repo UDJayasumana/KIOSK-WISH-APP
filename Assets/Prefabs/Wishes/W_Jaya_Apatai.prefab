@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 9028049006632907608}
   - component: {fileID: 5396940903738981629}
   - component: {fileID: 7854627813779032119}
+  - component: {fileID: 4306990005117024373}
   m_Layer: 0
   m_Name: W_Jaya_Apatai
   m_TagString: Untagged
@@ -81,3 +82,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &4306990005117024373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8503290952903584226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 529065539eea9a148a84bf5d8847a3a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PointA: {x: 0, y: 0, z: 0}
+  PointB: {x: 0, y: 0, z: 0}

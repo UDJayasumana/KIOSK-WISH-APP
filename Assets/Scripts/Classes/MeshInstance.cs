@@ -138,7 +138,8 @@ public class MeshInstance
         if((this._lastMeshCount + 1) < meshPoints.Count)
         {
             GameObject spawnedObject = GameObject.Instantiate(meshData.GameObject);
-            spawnedObject.transform.position = meshData.EndPoint;
+            spawnedObject.transform.position = meshData.StartPoint;
+            spawnedObject.GetComponent<WishItem>().Initialize(meshData.StartPoint, meshData.EndPoint, false);
             this._spawnedObjects.Add(spawnedObject);
             this._currentMeshCount++;
             this._lastMeshCount = this._currentMeshCount;
@@ -147,10 +148,11 @@ public class MeshInstance
         else
         {
             GameObject spawnedObject = GameObject.Instantiate(meshData.GameObject);
-            spawnedObject.transform.position = meshData.EndPoint;
+            spawnedObject.transform.position = meshData.StartPoint;
+            spawnedObject.GetComponent<WishItem>().Initialize(meshData.StartPoint, meshData.EndPoint, true);
             this._currentMeshCount++;
             this._lastMeshCount = this._currentMeshCount;
-            GameObject.DestroyImmediate(spawnedObject);
+            //GameObject.DestroyImmediate(spawnedObject);
             Debug.Log("Destroy Single Mesh because of list is full");
         }
     }

@@ -4,65 +4,67 @@ using UnityEngine;
 
 public class WishItem : MonoBehaviour
 {
-    public Camera MainCamera;
 
-    public Transform PointA, PointB;
+    [HideInInspector]
+    public Vector3 PointA, PointB;
 
-    public GameObject SpawnPF;
-
-    public Transform MousePoint;
+    public bool DestroyAtTheEnd = false;
 
     private float timeElapsed = 0;
     private float lerpDuration = 3;
 
-    
-    void Start()
-    {
-        transform.position = PointA.position;
-    }
+    private bool _isUpdateMesh = false;
 
+    private Vector3 targetPosition;
+
+    private bool canUpdate = false;
+
+
+ 
+
+    public void Initialize(Vector3 startPosition, Vector3 endPosition, bool destroyAtTheEnd)
+    {
+        PointA = startPosition;
+        PointB = endPosition;
+        DestroyAtTheEnd = destroyAtTheEnd;
+
+        canUpdate = true;
+    }
 
     void Update()
     {
-        /*
+        if (!canUpdate)
+            return;
+       
+        
         if(timeElapsed < lerpDuration)
         {
-            Vector3 targetPosition = Vector3.Lerp(PointA.position, PointB.position, timeElapsed/lerpDuration);
+            targetPosition = Vector3.Lerp(PointA, PointB, timeElapsed/lerpDuration);
             timeElapsed += Time.deltaTime;
 
             transform.position = targetPosition;
         }
-        */
-        //Debug.Log(string.Format("Object Position : {0} Point B Position : {1}", transform.position, PointB.position));
-
-        if(Input.GetMouseButtonDown(0))
+        
+        if(timeElapsed >= lerpDuration && DestroyAtTheEnd)
         {
-            GetRandomScreenPoint();
+            Debug.Log("Destroy Extra Wish");
+            DestroyImmediate(gameObject);
         }
 
+       /*
+        if(Vector3.Distance(transform.position, PointB) < 0.1f && !_isUpdateMesh)
+        {
+            Debug.Log("ME Updated!");
+            MeshData<GameObject, Vector3, Vector3> meshData = new MeshData<GameObject, Vector3, Vector3>();
+            meshData.GameObject = gameObject;
+            meshData.StartPoint = PointA;
+            meshData.EndPoint = PointB;
+            FindObjectOfType<MeshDataManager>().MeshInstancer.UpdateMeshInstant(meshData, FindObjectOfType<MeshDataManager>().RandomMeshPointList);
+            _isUpdateMesh = true;
+        }
+       */
+      
     }
 
-    void GetRandomScreenPoint()
-    {
-        /*
-        Vector3 spawnPoint = MainCamera.ScreenToWorldPoint(Input.mousePosition);
-
-
-        spawnPoint.z = 0;
-
-        MousePoint.position = spawnPoint;
-        */
-        Vector2 Bounds = MainCamera.ScreenToWorldPoint(new Vector2(Screen.width, Screen.height));
-
-        float minX = -Bounds.x;
-        float maxX =  Bounds.x;
-        float minY = -Bounds.y;
-        float maxY =  Bounds.y;
-   
-        Vector2 pos = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxY));
-
-        MousePoint.position = pos;
-
-    }
 
 }
