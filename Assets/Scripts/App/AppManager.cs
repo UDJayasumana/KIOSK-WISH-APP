@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,9 +10,7 @@ public class AppManager : MonoBehaviour
 
     public Text DebugTX;
 
-    //For Manual Updatable Spawn Objects
-    private List<GameObject> _manualSpawnObjects;
-    //End of For Manual Updatable Spawn Objects
+    public bool IsManualUpdateWishes = false;
 
     private MeshDataManager _meshDataManager;
     private XMLFileManager _xmlFileManager;
@@ -27,23 +26,27 @@ public class AppManager : MonoBehaviour
 
     void Update()
     {
-        //For Manual Updatable Spawn Objects
-        if (Input.GetKeyDown(KeyCode.P))
+
+        //If Wishes Data Update by Manually
+        if (IsManualUpdateWishes)
         {
-            try
+
+            if (Input.GetKeyDown(KeyCode.P))
             {
-                ManualUpdateWishData(15);
+                UpdateManualWishesData(15);
             }
-            catch(Exception e)
-            {
-                DebugTX.text = e.Message;
-            }
-           
+
         }
-        //End of For Manual Updatable Spawn Objects  
+
+
+
     }
 
-    void Initialize()
+
+    /// <summary>
+    /// Initialize App data
+    /// </summary>
+    async void Initialize()
     {
         
        _meshDataManager = GetComponent<MeshDataManager>();
@@ -51,19 +54,28 @@ public class AppManager : MonoBehaviour
        _databaseManager = GetComponent<DatabaseManager>();
        _wishesManager = GetComponent<WishesManager>();
 
-        
-       CreateOrLoadRandomMeshPoints();
-        
-        //Comment for Activate Manual Update
-       //UpdateWishesData();
+
+        CreateOrLoadRandomMeshPoints();
+
+        if (!IsManualUpdateWishes)
+        {
+
+            _databaseManager.InitializeURLs();
+
+             await UpdateDBWishesData();
+
+            _wishesManager.UpdateInstanceMesh();
+
+        }
+        else
+        {
+            _wishesManager.WishPrefabs = new List<GameObject>();
+        }
 
 
-        //For Manual Updatable Spawn Objects
-        _manualSpawnObjects = new List<GameObject>();
-        //End of For Manual Updatable Spawn Objects
+
 
     }
-
 
 
     /// <summary>
@@ -112,7 +124,7 @@ public class AppManager : MonoBehaviour
     /// <summary>
     /// Sync with database abd Update new wishes data
     /// </summary>
-    async void UpdateWishesData()
+    async Task UpdateDBWishesData()
     {
 
         if (_databaseManager.WishesInfo == null)
@@ -120,29 +132,55 @@ public class AppManager : MonoBehaviour
 
         Debug.Log(_databaseManager.WishesInfo.Count);
 
-        _wishesManager.LoadWishPrefabs();
+        if (_databaseManager.WishesInfo.Count != 0)
+        {
 
-        bool isWishesUpdated = _wishesManager.UpdateWishesList();
+            _wishesManager.LoadWishPrefabs();
 
-        Debug.Log("Wishes Update Status : " + isWishesUpdated);
+            bool isWishesUpdated = _wishesManager.UpdateWishesList();
+
+            if (isWishesUpdated)
+                _wishesManager.UpdateInstanceMesh();
+
+            if (!isWishesUpdated)
+            {
+
+                List<Vector3> randomStartPoints = new List<Vector3>();
+
+                foreach (GameObject go in _wishesManager.WishPrefabs)
+                {
+                    randomStartPoints.Add(_wishesManager.GetRandomScreenPoint());
+                }
+
+                List<MeshData<GameObject, Vector3, Vector3>> meshDataList = _meshDataManager.MeshInstancer.GetManualUpdatableMeshes(_wishesManager.WishPrefabs, randomStartPoints, _meshDataManager.RandomMeshPointList);
+
+                StartCoroutine(_wishesManager.SpawnWishesWithAnimation(meshDataList));
+            }
+
+        }
+
     }
 
 
-    //For Manual Updatable Spawn Objects
-    void ManualUpdateWishData(int amount)
+    
+    /// <summary>
+    /// Update Wishes Data by Manually
+    /// </summary>
+    void UpdateManualWishesData(int amount)
     {
+
         for (int i = 0; i < amount; i++)
         {
               
             int randomId = UnityEngine.Random.Range(0, 3);
 
-            GameObject spawnObj = (randomId == 0) ? _wishesManager.W_BringCupHome : ((randomId == 1) ? _wishesManager.W_SriLankaCan : _wishesManager.W_JayaApatai);
+            GameObject wishPrefab = (randomId == 0) ? _wishesManager.W_BringCupHome : ((randomId == 1) ? _wishesManager.W_SriLankaCan : _wishesManager.W_JayaApatai);
 
-            _manualSpawnObjects.Add(spawnObj);
+            _wishesManager.WishPrefabs.Add(wishPrefab);
                    
         }
 
-        bool isUpdateMeshes = _meshDataManager.MeshInstancer.UpdateMeshesInstant(_manualSpawnObjects, _meshDataManager.RandomMeshPointList);
+        bool isUpdateMeshes = _meshDataManager.MeshInstancer.UpdateMeshesInstant(_wishesManager.WishPrefabs, _meshDataManager.RandomMeshPointList);
 
         if(isUpdateMeshes)
            _wishesManager.UpdateInstanceMesh();
@@ -150,40 +188,23 @@ public class AppManager : MonoBehaviour
 
         if (!isUpdateMeshes)
         {
-            Debug.Log("Time for manual Update");
 
             List<Vector3> randomStartPoints = new List<Vector3>();
 
-            foreach (GameObject go in _manualSpawnObjects)
+            foreach (GameObject go in _wishesManager.WishPrefabs)
             {
                 randomStartPoints.Add(_wishesManager.GetRandomScreenPoint());
             }
 
-            List<MeshData<GameObject, Vector3, Vector3>> meshDataList = _meshDataManager.MeshInstancer.GetManualUpdatableMeshes(_manualSpawnObjects, randomStartPoints, _meshDataManager.RandomMeshPointList);
-
-            Debug.Log("meshData List " + ((meshDataList == null) ? "is null" : ("count : " + meshDataList.Count)));
+            List<MeshData<GameObject, Vector3, Vector3>> meshDataList = _meshDataManager.MeshInstancer.GetManualUpdatableMeshes(_wishesManager.WishPrefabs, randomStartPoints, _meshDataManager.RandomMeshPointList);
 
 
-            StartCoroutine(_wishesManager.SpawnManualWishes(meshDataList));
-
-            //Update Single Meshes into the Mesh list
-            //If mesh limit increase after adding the current meshes, then update only the count
-            //Otherwise added these meshes also into mesh list
-            /*
-            if (meshDataList != null)
-            {
-                foreach (MeshData<GameObject, Vector3, Vector3> md in meshDataList)
-                {
-                    _meshDataManager.MeshInstancer.UpdateMeshInstant(md, _meshDataManager.RandomMeshPointList);
-                    
-                }
-            }
-            */
+            StartCoroutine(_wishesManager.SpawnWishesWithAnimation(meshDataList));
             
 
         }
-        //_wishesManager.UpdateInstanceMesh();
+     
     }
-    //End of For Manual Updatable Spawn Objects
+   
 
 }

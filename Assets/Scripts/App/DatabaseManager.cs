@@ -8,16 +8,32 @@ using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
+
 public class DatabaseManager : MonoBehaviour
 {
-    private const string WishCountURL = "http://localhost/cwc-api/fullcount.php";
-    private const string WishDataURL = "http://localhost/cwc-api/";
+    public enum APISource { Server, LocalHost }
+
+    public APISource CurrentHost = APISource.LocalHost;
+
+    private const string ServerBaseURL = "https://srilankacan.online/cwc-api/";
+    private const string LocalHostBaseURL = "http://localhost/cwc-api/";
+
+    private string MainBaseURL = "";
+
+    private const string WishCountURL = "fullcount.php";
 
     public int LatestWishCount { get { return _latestWishCount; } }
     public List<WishData> WishesInfo { get { return _wishesInfo; } }
 
     private int _latestWishCount;
     private List<WishData> _wishesInfo;
+
+   
+
+    public void InitializeURLs()
+    {
+        MainBaseURL = (CurrentHost == APISource.Server) ? ServerBaseURL : LocalHostBaseURL;
+    }
 
 
     private async Task<string> AsyncGetRequest(string url)
@@ -96,7 +112,7 @@ public class DatabaseManager : MonoBehaviour
     private async Task RequestLatestWishCount()
     {
 
-        string latestWishCount =  await AsyncGetRequest(WishCountURL);
+        string latestWishCount =  await AsyncGetRequest(MainBaseURL + WishCountURL);
         WishCount wishCount = JsonUtility.FromJson<WishCount>(latestWishCount);
         _latestWishCount = wishCount.full_count;
 
@@ -114,7 +130,7 @@ public class DatabaseManager : MonoBehaviour
         string postData = JsonUtility.ToJson(wishDataRequest);
         byte[] bytes = Encoding.UTF8.GetBytes(postData);
 
-        string data = await AsyncPutRequest(WishDataURL, bytes);
+        string data = await AsyncPutRequest(MainBaseURL, bytes);
 
         return data;
 

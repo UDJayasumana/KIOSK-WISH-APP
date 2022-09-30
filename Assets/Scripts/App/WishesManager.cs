@@ -8,19 +8,15 @@ public class WishesManager : MonoBehaviour
 
     public Material WishesSetMaterial;
 
-
     public Camera Camera2D;
 
-    public List<GameObject> WishPrefabs { get { return _wishPrefabs; } }
+    public List<GameObject> WishPrefabs { get; set; }
 
     private MeshDataManager _meshDataManager;
     private DatabaseManager _databaseManager;
-
     private GameObject _instaceWishMesh;
 
-    private List<GameObject> _wishPrefabs;
 
-    private int fullWishCount = 0;
     void Awake()
     {
         _meshDataManager = GetComponent<MeshDataManager>();
@@ -29,12 +25,7 @@ public class WishesManager : MonoBehaviour
         
     }
 
-    void Update()
-    {
-        //UpdateInstanceMesh();
 
-
-    }
     public void UpdateInstanceMesh()
     {
         if (_instaceWishMesh == null)
@@ -49,32 +40,32 @@ public class WishesManager : MonoBehaviour
 
     public void LoadWishPrefabs()
     {
-        _wishPrefabs = new List<GameObject>();
+        WishPrefabs = new List<GameObject>();
 
         foreach(WishData wd in _databaseManager.WishesInfo)
         {
             switch(wd.wish)
             {
                 case "sri_lanka_can":
-                    _wishPrefabs.Add(W_SriLankaCan);
+                    WishPrefabs.Add(W_SriLankaCan);
                     break;
 
                 case "bring_the_cup_home":
-                    _wishPrefabs.Add(W_BringCupHome);
+                    WishPrefabs.Add(W_BringCupHome);
                     break;
 
                 case "jaya_apatai":
-                    _wishPrefabs.Add(W_JayaApatai);
+                    WishPrefabs.Add(W_JayaApatai);
                     break;
             }
         }
 
-        Debug.Log("Wish Prefab Count : " + _wishPrefabs.Count);
+        Debug.Log("Wish Prefab Count : " + WishPrefabs.Count);
     }
 
     public bool UpdateWishesList()
     {
-        return _meshDataManager.MeshInstancer.UpdateMeshesInstant(_wishPrefabs, _meshDataManager.RandomMeshPointList);
+        return _meshDataManager.MeshInstancer.UpdateMeshesInstant(WishPrefabs, _meshDataManager.RandomMeshPointList);
 
     }
 
@@ -95,25 +86,11 @@ public class WishesManager : MonoBehaviour
 
     }
 
-    public IEnumerator SpawnManualWishes(List<MeshData<GameObject, Vector3, Vector3>> meshDataList)
+    public IEnumerator SpawnWishesWithAnimation(List<MeshData<GameObject, Vector3, Vector3>> meshDataList)
     {
-        /*
-        for(int i = 0; i < meshDataList.Count; i++)
-        {
-            GameObject go = Instantiate(meshDataList[i].GameObject);
-            go.transform.position = meshDataList[i].StartPoint;
-            go.GetComponent<WishItem>().Initialize(meshDataList[i].StartPoint, meshDataList[i].EndPoint);
-            yield return new WaitForSeconds(2);
-        }
-        
-        yield return new WaitForSeconds(1);
-        */
-
         foreach(MeshData<GameObject, Vector3, Vector3> md in meshDataList)
         {
             _meshDataManager.MeshInstancer.UpdateMeshInstant(md, _meshDataManager.RandomMeshPointList);
-            fullWishCount++;
-            Debug.Log("WC : " + fullWishCount);
             yield return new WaitForSeconds(2);
         }
 
