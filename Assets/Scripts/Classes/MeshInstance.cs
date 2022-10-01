@@ -46,48 +46,6 @@ public class MeshInstance
         Debug.Log("Valid Last Mesh Count : " + validLastMeshCount);
         Debug.Log("Actual Last Mesh Count : " + this._lastMeshCount);
 
-        #region Unoptimized Code
-        /*
-           if (this._currentMeshCount <= meshPoints.Count)
-           {
-
-                for (int i = this._lastMeshCount; i < this._currentMeshCount; i++)
-                {
-                   GameObject spawnedObject = GameObject.Instantiate(spawnObjects[i]);
-                   spawnedObject.transform.position = meshPoints[i];
-                   this._spawnedObjects.Add(spawnedObject);
-                }
-
-                this._lastMeshCount = this._currentMeshCount;
-
-
-               result = true;
-
-           }
-           else
-           {
-
-               int validLastMeshCount = Mathf.Clamp(this._currentMeshCount, 0, meshPoints.Count);
-
-               for (int i = this._lastMeshCount; i < validLastMeshCount; i++)
-               {
-                   GameObject spawnedObject = GameObject.Instantiate(spawnObjects[i]);
-                   spawnedObject.transform.position = meshPoints[i];
-                   this._spawnedObjects.Add(spawnedObject);
-               }
-
-               this._lastMeshCount = this._currentMeshCount;
-
-               result = true;
-
-               //Debug.Log("Spawned Mesh Count : " + validLastMeshCount);
-           }
-
-           Debug.Log("Last Mesh Count : " + this._lastMeshCount);
-       */
-
-        #endregion
-
         return result; 
 
     }

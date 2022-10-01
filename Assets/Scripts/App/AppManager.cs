@@ -24,20 +24,20 @@ public class AppManager : MonoBehaviour
     }
 
 
-    void Update()
+    async void Update()
     {
 
         //If Wishes Data Update by Manually
-        if (IsManualUpdateWishes)
+
+        if (Input.GetKeyDown(KeyCode.P))
         {
-
-            if (Input.GetKeyDown(KeyCode.P))
-            {
+            if (IsManualUpdateWishes)
                 UpdateManualWishesData(15);
-            }
-
+            else
+                await UpdateDBWishesData();
         }
 
+      
 
 
     }
@@ -63,8 +63,6 @@ public class AppManager : MonoBehaviour
             _databaseManager.InitializeURLs();
 
              await UpdateDBWishesData();
-
-            _wishesManager.UpdateInstanceMesh();
 
         }
         else
@@ -127,8 +125,9 @@ public class AppManager : MonoBehaviour
     async Task UpdateDBWishesData()
     {
 
-        if (_databaseManager.WishesInfo == null)
-            await _databaseManager.GetLatestWishesInfo();
+        _wishesManager.WishPrefabs = new List<GameObject>();
+
+        await _databaseManager.GetLatestWishesInfo(); 
 
         Debug.Log(_databaseManager.WishesInfo.Count);
 
@@ -154,7 +153,10 @@ public class AppManager : MonoBehaviour
 
                 List<MeshData<GameObject, Vector3, Vector3>> meshDataList = _meshDataManager.MeshInstancer.GetManualUpdatableMeshes(_wishesManager.WishPrefabs, randomStartPoints, _meshDataManager.RandomMeshPointList);
 
-                StartCoroutine(_wishesManager.SpawnWishesWithAnimation(meshDataList));
+                if (meshDataList != null)
+                    StartCoroutine(_wishesManager.SpawnWishesWithAnimation(meshDataList));
+                else
+                    Debug.Log("Mesh Data is Null");
             }
 
         }

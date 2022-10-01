@@ -40,7 +40,7 @@ public class WishesManager : MonoBehaviour
 
     public void LoadWishPrefabs()
     {
-        WishPrefabs = new List<GameObject>();
+        //WishPrefabs = new List<GameObject>();
 
         foreach(WishData wd in _databaseManager.WishesInfo)
         {
