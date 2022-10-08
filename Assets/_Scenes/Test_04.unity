@@ -158,6 +158,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DebugTX: {fileID: 1446528146}
   IsManualUpdateWishes: 0
+  IsDBAutoUpdate: 1
+  AutoDBUpdateInterval: 60
 --- !u!4 &219486369
 Transform:
   m_ObjectHideFlags: 0
@@ -170,7 +172,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &219486370
 MonoBehaviour:
@@ -307,7 +309,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &281282277
 GameObject:
@@ -424,7 +426,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f393e94924e89da4ab4db0a3068dccfb, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f393e94924e89da4ab4db0a3068dccfb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -825,7 +827,7 @@ Transform:
   m_LocalScale: {x: 0.93920606, y: 0.93920606, z: 0.93920606}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &1830524187
 GameObject:
@@ -919,7 +921,7 @@ RectTransform:
   m_Children:
   - {fileID: 1446528145}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}

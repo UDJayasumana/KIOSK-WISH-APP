@@ -12,6 +12,10 @@ public class AppManager : MonoBehaviour
 
     public bool IsManualUpdateWishes = false;
 
+    public bool IsDBAutoUpdate = false;
+    
+    public float AutoDBUpdateInterval = 1f;
+
     private MeshDataManager _meshDataManager;
     private XMLFileManager _xmlFileManager;
     private DatabaseManager _databaseManager;
@@ -71,8 +75,29 @@ public class AppManager : MonoBehaviour
         }
 
 
+        if (IsDBAutoUpdate)
+            Invoke("UpdateDBWithDelayAsync", AutoDBUpdateInterval);
 
 
+    }
+
+    async void  UpdateDBWithDelayAsync()
+    {
+       try
+        {
+            await UpdateDBWishesData();
+        }
+        catch(Exception e)
+        {
+            Debug.LogError("Error : " + e.Message);
+        }
+        finally
+        {
+            Invoke("UpdateDBWithDelayAsync", AutoDBUpdateInterval);
+        }
+       
+
+        
     }
 
 

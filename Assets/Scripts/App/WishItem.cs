@@ -16,9 +16,12 @@ public class WishItem : MonoBehaviour
     private bool _isUpdateMesh = false;
 
     private Vector3 targetPosition;
+    private Vector3 targetScale;
 
     private bool canUpdate = false;
 
+    private Vector3 startScale = Vector3.zero;
+    private Vector3 endScale = Vector3.zero;
 
  
 
@@ -27,6 +30,11 @@ public class WishItem : MonoBehaviour
         PointA = startPosition;
         PointB = endPosition;
         DestroyAtTheEnd = destroyAtTheEnd;
+
+        float randomStartScale = Random.Range(2, 5);
+        startScale = new Vector3(randomStartScale, randomStartScale, randomStartScale);
+
+        endScale = transform.localScale;
 
         canUpdate = true;
     }
@@ -40,9 +48,12 @@ public class WishItem : MonoBehaviour
         if(timeElapsed < lerpDuration)
         {
             targetPosition = Vector3.Lerp(PointA, PointB, timeElapsed/lerpDuration);
+            targetScale = Vector3.Lerp(startScale, endScale, timeElapsed / lerpDuration);
+
             timeElapsed += Time.deltaTime;
 
             transform.position = targetPosition;
+            transform.localScale = targetScale;
         }
         
         if(timeElapsed >= lerpDuration && DestroyAtTheEnd)
