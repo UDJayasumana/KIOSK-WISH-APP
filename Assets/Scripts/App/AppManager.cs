@@ -3,18 +3,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Playables;
 
 public class AppManager : MonoBehaviour
 {
 
-    public Text DebugTX;
 
     public bool IsManualUpdateWishes = false;
 
     public bool IsDBAutoUpdate = false;
     
     public float AutoDBUpdateInterval = 1f;
+
+    public float CamDemoAnimationInterval = 1.5f;
+
+    public PlayableDirector MainCamTimeline;
 
     private MeshDataManager _meshDataManager;
     private XMLFileManager _xmlFileManager;
@@ -24,7 +27,9 @@ public class AppManager : MonoBehaviour
    
     void Awake()
     {
-        Initialize();  
+        Initialize();
+
+        
     }
 
 
@@ -79,6 +84,9 @@ public class AppManager : MonoBehaviour
             Invoke("UpdateDBWithDelayAsync", AutoDBUpdateInterval);
 
 
+        Invoke("PlayCameraDemoAnimation", CamDemoAnimationInterval);
+
+
     }
 
     async void  UpdateDBWithDelayAsync()
@@ -98,6 +106,14 @@ public class AppManager : MonoBehaviour
        
 
         
+    }
+
+
+    void PlayCameraDemoAnimation()
+    {
+        MainCamTimeline.Play();
+
+        Invoke("PlayCameraDemoAnimation", CamDemoAnimationInterval);
     }
 
 

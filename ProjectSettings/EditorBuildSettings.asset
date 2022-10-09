@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/_Scenes/Test_04.unity
-    guid: ea8e70a521ac94242bc5d6c5ca7c6403
+    path: Assets/_Scenes/Test_05(Done Demo Camera Animation).unity
+    guid: 7b36a79a6c41fb04dbdfa6ab7286419f
   m_configObjects: {}

@@ -171,7 +171,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &219486367
 GameObject:
@@ -206,10 +206,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b1613c85c1b384d878841fcf439de7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebugTX: {fileID: 1446528146}
   IsManualUpdateWishes: 0
   IsDBAutoUpdate: 1
   AutoDBUpdateInterval: 60
+  CamDemoAnimationInterval: 40
+  MainCamTimeline: {fileID: 190589338}
 --- !u!4 &219486369
 Transform:
   m_ObjectHideFlags: 0
@@ -222,7 +223,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &219486370
 MonoBehaviour:
