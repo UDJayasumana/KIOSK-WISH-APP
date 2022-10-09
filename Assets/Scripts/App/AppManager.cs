@@ -113,7 +113,7 @@ public class AppManager : MonoBehaviour
     {
         MainCamTimeline.Play();
 
-        Invoke("PlayCameraDemoAnimation", CamDemoAnimationInterval);
+        Invoke("PlayCameraDemoAnimation", CamDemoAnimationInterval + 21);
     }
 
 
